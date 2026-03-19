@@ -11,6 +11,10 @@ jobs:
     name: Lint & Test (Bun ${{ matrix.bun-version }})
     runs-on: ubuntu-latest
 
+    permissions:
+      checks: write
+      contents: read
+
     strategy:
       fail-fast: false
       matrix:
