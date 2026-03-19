@@ -9,7 +9,7 @@ on:
 jobs:
   ci:
     name: Lint & Test (Bun ${{ matrix.bun-version }})
-    runs-on: alpine-latest
+    runs-on: ubuntu-latest
 
     permissions:
       checks: write
@@ -63,3 +63,7 @@ jobs:
           path: test-results.xml
           reporter: java-junit
           fail-on-error: true
+
+      - name: Build
+        depends-on: test
+        run: bun run build
