@@ -36,7 +36,14 @@ jobs:
         run: bun run lint
 
       - name: Test
-        run: bun run test:run
+        run: |
+          bun test src/tests/ 2>&1 | tee /tmp/test-output.txt
+          {
+            echo "### Coverage"
+            echo '```'
+            grep -E '^\-+\||.*\|' /tmp/test-output.txt || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Generate JUnit report
         if: always()
@@ -49,9 +56,3 @@ jobs:
           name: Bun Test Report (Bun ${{ matrix.bun-version }})
           path: test-results.xml
           reporter: java-junit
-
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report-bun-${{ matrix.bun-version }}
-          path: coverage/
