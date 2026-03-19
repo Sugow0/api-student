@@ -37,6 +37,35 @@ export const studentController = new Elysia({ prefix: "/students" })
       },
     },
   )
+  .delete(
+    "/:id",
+    ({ params: { id }, set }) => {
+      const parsed = Number(id);
+      if (!Number.isInteger(parsed) || isNaN(parsed)) {
+        set.status = 400;
+        return { message: "L'ID doit être un nombre valide" };
+      }
+
+      const deleted = studentService.remove(parsed);
+      if (!deleted) {
+        set.status = 404;
+        return { message: `Aucun étudiant trouvé avec l'ID ${parsed}` };
+      }
+
+      return { message: `L'étudiant avec l'ID ${parsed} a été supprimé` };
+    },
+    {
+      params: idParams,
+      detail: {
+        summary: "Supprimer un étudiant",
+        tags: ["students"],
+        responses: {
+          200: { description: "Étudiant supprimé" },
+          404: { description: "Étudiant non trouvé" },
+        },
+      },
+    },
+  )
   .put(
     "/:id",
     ({ params: { id }, body, set }) => {

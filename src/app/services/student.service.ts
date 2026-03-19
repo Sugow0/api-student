@@ -22,6 +22,13 @@ export const studentService = {
     return newStudent;
   },
 
+  remove: (id: number): boolean => {
+    const index = students.findIndex((s) => s.id === id);
+    if (index === -1) return false;
+    students.splice(index, 1);
+    return true;
+  },
+
   update: (id: number, data: CreateStudentDto): UpdateResult => {
     const index = students.findIndex((s) => s.id === id);
     if (index === -1) return "NOT_FOUND";
