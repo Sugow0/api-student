@@ -1,12 +1,45 @@
 import studentsData from "../../data/student.json";
-import type { CreateStudentDto, SearchStudentDto, Stats, Student } from "../schemas/student.schema";
+import type {
+	CreateStudentDto,
+	ListStudentsDto,
+	PaginatedStudents,
+	SearchStudentDto,
+	Stats,
+	Student,
+} from "../schemas/student.schema";
 
 export type UpdateResult = "NOT_FOUND" | "EMAIL_CONFLICT" | Student;
 
 const students: Student[] = [...(studentsData as Student[])];
 
 export const studentService = {
-	findAll: (): Student[] => students,
+	findAll: (query?: ListStudentsDto): PaginatedStudents => {
+		const page = query?.page ?? 1;
+		const limit = query?.limit ?? 10;
+
+		const result = [...students];
+
+		if (query?.sort) {
+			const key = query.sort;
+			const order = query.order ?? "asc";
+			result.sort((a, b) => {
+				const aVal = a[key];
+				const bVal = b[key];
+				if (typeof aVal === "string" && typeof bVal === "string") {
+					return order === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+				}
+				return order === "asc"
+					? (aVal as number) - (bVal as number)
+					: (bVal as number) - (aVal as number);
+			});
+		}
+
+		const total = result.length;
+		const totalPages = Math.ceil(total / limit);
+		const data = result.slice((page - 1) * limit, page * limit);
+
+		return { data, total, page, limit, totalPages };
+	},
 
 	findById: (id: number): Student | null => students.find((s) => s.id === id) ?? null,
 

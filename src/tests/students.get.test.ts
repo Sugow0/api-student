@@ -12,21 +12,26 @@ describe("GET /students", () => {
 		get = (path) => app.handle(new Request(`http://localhost${path}`));
 	});
 
-	describe("liste complète", () => {
-		it("doit renvoyer 200 et un tableau JSON", async () => {
+	describe("liste paginée", () => {
+		it("doit renvoyer 200 avec la structure paginée", async () => {
 			const response = await get("/students");
 			const body = await response.json();
 
 			expect(response.status).toBe(200);
-			expect(Array.isArray(body)).toBe(true);
+			expect(body).toHaveProperty("data");
+			expect(body).toHaveProperty("total");
+			expect(body).toHaveProperty("page");
+			expect(body).toHaveProperty("limit");
+			expect(body).toHaveProperty("totalPages");
+			expect(Array.isArray(body.data)).toBe(true);
 		});
 
-		it("doit renvoyer tous les étudiants initiaux", async () => {
+		it("doit renvoyer le total de tous les étudiants initiaux", async () => {
 			const response = await get("/students");
 			const body = await response.json();
 
 			expect(response.status).toBe(200);
-			expect(body).toHaveLength(studentsData.length);
+			expect(body.total).toBe(studentsData.length);
 		});
 	});
 

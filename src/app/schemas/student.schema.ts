@@ -45,6 +45,29 @@ export const SearchStudentSchema = t.Object({
 	),
 });
 
+export const ListStudentsSchema = t.Object({
+	page: t.Optional(t.Numeric({ minimum: 1 })),
+	limit: t.Optional(t.Numeric({ minimum: 1, maximum: 100 })),
+	sort: t.Optional(
+		t.Union([
+			t.Literal("id"),
+			t.Literal("firstName"),
+			t.Literal("lastName"),
+			t.Literal("grade"),
+			t.Literal("field"),
+		]),
+	),
+	order: t.Optional(t.Union([t.Literal("asc"), t.Literal("desc")])),
+});
+
+export const PaginatedStudentsSchema = t.Object({
+	data: t.Array(StudentSchema),
+	total: t.Number(),
+	page: t.Number(),
+	limit: t.Number(),
+	totalPages: t.Number(),
+});
+
 export const StatsSchema = t.Object({
 	totalStudents: t.Number(),
 	averageGrade: t.Number(),
@@ -55,4 +78,6 @@ export const StatsSchema = t.Object({
 export type Student = Static<typeof StudentSchema>;
 export type CreateStudentDto = Static<typeof CreateStudentSchema>;
 export type SearchStudentDto = Static<typeof SearchStudentSchema>;
+export type ListStudentsDto = Static<typeof ListStudentsSchema>;
+export type PaginatedStudents = Static<typeof PaginatedStudentsSchema>;
 export type Stats = Static<typeof StatsSchema>;

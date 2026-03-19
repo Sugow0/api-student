@@ -1,9 +1,10 @@
 import { Elysia, t } from "elysia";
 import {
 	CreateStudentSchema,
+	ListStudentsSchema,
+	PaginatedStudentsSchema,
 	SearchStudentSchema,
 	StatsSchema,
-	StudentSchema,
 } from "../schemas/student.schema";
 import { studentService } from "../services/student.service";
 
@@ -175,14 +176,15 @@ export const studentController = new Elysia({ prefix: "/students" })
 			},
 		},
 	)
-	.get("/", () => studentService.findAll(), {
-		response: t.Array(StudentSchema),
+	.get("/", ({ query }) => studentService.findAll(query), {
+		query: ListStudentsSchema,
+		response: PaginatedStudentsSchema,
 		detail: {
 			summary: "Récupérer tous les étudiants",
-			description: "Retourne la liste complète de tous les étudiants",
+			description: "Retourne les étudiants avec pagination et tri optionnels",
 			tags: ["students"],
 			responses: {
-				200: { description: "Liste des étudiants" },
+				200: { description: "Liste paginée des étudiants" },
 			},
 		},
 	});
