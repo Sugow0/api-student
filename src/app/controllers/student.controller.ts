@@ -1,20 +1,72 @@
 import { Elysia, t } from "elysia";
 import { studentService } from "../services/student.service";
 
+const studentSchema = t.Object({
+  id: t.Number(),
+  firstName: t.String(),
+  lastName: t.String(),
+  email: t.String(),
+  grade: t.Number(),
+  field: t.String(),
+});
+
 export const studentController = new Elysia({ prefix: "/students" })
-  .get("/:id", ({ params: { id }, set, error }) => {
+  .onError(({ code, error, set }) => {
+    if (code === "VALIDATION") {
+      set.status = 400;
+      const parsed = JSON.parse(error.message);
+      return { message: parsed.errors?.[0]?.message ?? "Données invalides" };
+    }
+  })
+  .post(
+    "/",
+    ({ body, set }) => {
+      if (studentService.isEmailTaken(body.email)) {
+        set.status = 409;
+        return { message: "Cet email est déjà utilisé" };
+      }
+      const student = studentService.create(body);
+      set.status = 201;
+      return student;
+    },
+    {
+      body: t.Object({
+        firstName: t.String({ minLength: 2 }),
+        lastName: t.String({ minLength: 2 }),
+        email: t.String({ format: "email" }),
+        grade: t.Number({ minimum: 0, maximum: 20 }),
+        field: t.Union([
+          t.Literal("informatique"),
+          t.Literal("mathématiques"),
+          t.Literal("physique"),
+          t.Literal("chimie"),
+        ]),
+      }),
+      detail: {
+        summary: "Créer un nouvel étudiant",
+        description: "Crée un étudiant avec validation complète des champs",
+        tags: ["students"],
+        responses: {
+          201: { description: "Étudiant créé avec succès" },
+          400: { description: "Données invalides" },
+          409: { description: "Email déjà utilisé" },
+        },
+      },
+    },
+  )
+  .get("/:id", ({ params: { id }, set }) => {
     const parsed = Number(id);
 
     if (!Number.isInteger(parsed) || isNaN(parsed)) {
       set.status = 400;
-      return error(400, { message: "L'ID doit être un nombre valide" });
+      return { message: "L'ID doit être un nombre valide" };
     }
 
     const student = studentService.findById(parsed);
 
     if (!student) {
       set.status = 404;
-      return error(404, { message: `Aucun étudiant trouvé avec l'ID ${parsed}` });
+      return { message: `Aucun étudiant trouvé avec l'ID ${parsed}` };
     }
 
     return student;
@@ -49,29 +101,30 @@ export const studentController = new Elysia({ prefix: "/students" })
     },
   })
   .get(
-  "/",
-  () => studentService.findAll(),
-  {
-    detail: {
-      summary: "Récupérer tous les étudiants",
-      description: "Retourne la liste complète de tous les étudiants",
-      tags: ["students"],
-      responses: {
-        200: {
-          description: "Liste des étudiants",
-          content: {
-            "application/json": {
-              schema: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    id: { type: "number" },
-                    firstName: { type: "string" },
-                    lastName: { type: "string" },
-                    email: { type: "string" },
-                    grade: { type: "number" },
-                    field: { type: "string" },
+    "/",
+    () => studentService.findAll(),
+    {
+      detail: {
+        summary: "Récupérer tous les étudiants",
+        description: "Retourne la liste complète de tous les étudiants",
+        tags: ["students"],
+        responses: {
+          200: {
+            description: "Liste des étudiants",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      id: { type: "number" },
+                      firstName: { type: "string" },
+                      lastName: { type: "string" },
+                      email: { type: "string" },
+                      grade: { type: "number" },
+                      field: { type: "string" },
+                    },
                   },
                 },
               },
@@ -80,5 +133,4 @@ export const studentController = new Elysia({ prefix: "/students" })
         },
       },
     },
-  },
-);
+  );
