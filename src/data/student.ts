@@ -3,6 +3,6 @@ interface Student {
   firstName: string;
   lastName: string;
   email: string;
-  grade: string;
+  grade: number;
   field: string;
 }
