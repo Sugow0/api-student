@@ -10,7 +10,11 @@ import type {
 
 export type UpdateResult = "NOT_FOUND" | "EMAIL_CONFLICT" | Student;
 
-const students: Student[] = [...(studentsData as Student[])];
+let students: Student[] = [...(studentsData as Student[])];
+
+export const resetStudents = () => {
+	students = [...(studentsData as Student[])];
+};
 
 export const studentService = {
 	findAll: (query?: ListStudentsDto): PaginatedStudents => {

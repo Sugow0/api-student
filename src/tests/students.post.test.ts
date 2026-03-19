@@ -1,5 +1,20 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "bun:test";
+import { Elysia } from "elysia";
+import { studentController } from "../app/controllers/student.controller";
+import { resetStudents } from "../app/services/student.service";
 import studentsData from "../data/student.json";
+
+const app = new Elysia().use(studentController);
+
+beforeEach(() => resetStudents());
+const post = (body: unknown) =>
+	app.handle(
+		new Request("http://localhost/students", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(body),
+		}),
+	);
 
 const validPayload = {
 	firstName: "Alice",
@@ -10,23 +25,6 @@ const validPayload = {
 };
 
 describe("POST /students", () => {
-	let post: (body: unknown) => Promise<Response>;
-
-	beforeEach(async () => {
-		vi.resetModules();
-		const { Elysia } = await import("elysia");
-		const { studentController } = await import("../app/controllers/student.controller");
-		const app = new Elysia().use(studentController);
-		post = (body) =>
-			app.handle(
-				new Request("http://localhost/students", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify(body),
-				}),
-			);
-	});
-
 	it("doit renvoyer 201 et l'étudiant créé avec un ID auto-généré", async () => {
 		const response = await post(validPayload);
 		const body = await response.json();

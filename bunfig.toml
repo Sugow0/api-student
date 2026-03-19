@@ -1,0 +1,4 @@
+[test]
+coverageReporter = ["text", "lcov"]
+coverageDir = "coverage"
+coverageThreshold = { line = 80, function = 80, branch = 70 }

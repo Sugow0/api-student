@@ -1,17 +1,15 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "bun:test";
+import { Elysia } from "elysia";
+import { studentController } from "../app/controllers/student.controller";
+import { resetStudents } from "../app/services/student.service";
 import studentsData from "../data/student.json";
 
+const app = new Elysia().use(studentController);
+
+beforeEach(() => resetStudents());
+const get = (path: string) => app.handle(new Request(`http://localhost${path}`));
+
 describe("GET /students/stats", () => {
-	let get: (path: string) => Promise<Response>;
-
-	beforeEach(async () => {
-		vi.resetModules();
-		const { Elysia } = await import("elysia");
-		const { studentController } = await import("../app/controllers/student.controller");
-		const app = new Elysia().use(studentController);
-		get = (path) => app.handle(new Request(`http://localhost${path}`));
-	});
-
 	it("doit renvoyer 200 avec totalStudents, averageGrade, studentsByField et bestStudent", async () => {
 		const response = await get("/students/stats");
 		const body = await response.json();
@@ -32,16 +30,6 @@ describe("GET /students/stats", () => {
 });
 
 describe("GET /students/search", () => {
-	let get: (path: string) => Promise<Response>;
-
-	beforeEach(async () => {
-		vi.resetModules();
-		const { Elysia } = await import("elysia");
-		const { studentController } = await import("../app/controllers/student.controller");
-		const app = new Elysia().use(studentController);
-		get = (path) => app.handle(new Request(`http://localhost${path}`));
-	});
-
 	it("doit renvoyer 200 et uniquement les étudiants dont le nom correspond", async () => {
 		const target = studentsData[0];
 		const response = await get(`/students/search?lastName=${target.lastName}`);

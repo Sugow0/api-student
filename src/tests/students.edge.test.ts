@@ -1,25 +1,22 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "bun:test";
+import { Elysia } from "elysia";
+import { studentController } from "../app/controllers/student.controller";
+import { resetStudents } from "../app/services/student.service";
+
+const app = new Elysia().use(studentController);
+const get = (path: string) => app.handle(new Request(`http://localhost${path}`));
+
+beforeEach(() => resetStudents());
+const post = (body: unknown) =>
+	app.handle(
+		new Request("http://localhost/students", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(body),
+		}),
+	);
 
 describe("Cas limites", () => {
-	let get: (path: string) => Promise<Response>;
-	let post: (body: unknown) => Promise<Response>;
-
-	beforeEach(async () => {
-		vi.resetModules();
-		const { Elysia } = await import("elysia");
-		const { studentController } = await import("../app/controllers/student.controller");
-		const app = new Elysia().use(studentController);
-		get = (path) => app.handle(new Request(`http://localhost${path}`));
-		post = (body) =>
-			app.handle(
-				new Request("http://localhost/students", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify(body),
-				}),
-			);
-	});
-
 	describe("valeurs limites de grade", () => {
 		it("doit accepter grade = 0 (valeur minimale)", async () => {
 			const response = await post({
@@ -77,7 +74,7 @@ describe("Cas limites", () => {
 
 	describe("caractères spéciaux", () => {
 		it("doit gérer les accents dans la recherche", async () => {
-			const response = await get("/students/search?field=mathématiques");
+			const response = await get("/students/search?field=math%C3%A9matiques");
 			const body = await response.json();
 
 			expect(response.status).toBe(200);

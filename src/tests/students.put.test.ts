@@ -1,5 +1,20 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "bun:test";
+import { Elysia } from "elysia";
+import { studentController } from "../app/controllers/student.controller";
+import { resetStudents } from "../app/services/student.service";
 import studentsData from "../data/student.json";
+
+const app = new Elysia().use(studentController);
+
+beforeEach(() => resetStudents());
+const put = (id: number, body: unknown) =>
+	app.handle(
+		new Request(`http://localhost/students/${id}`, {
+			method: "PUT",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(body),
+		}),
+	);
 
 const updatedPayload = {
 	firstName: "Lucas",
@@ -10,23 +25,6 @@ const updatedPayload = {
 };
 
 describe("PUT /students/:id", () => {
-	let put: (id: number, body: unknown) => Promise<Response>;
-
-	beforeEach(async () => {
-		vi.resetModules();
-		const { Elysia } = await import("elysia");
-		const { studentController } = await import("../app/controllers/student.controller");
-		const app = new Elysia().use(studentController);
-		put = (id, body) =>
-			app.handle(
-				new Request(`http://localhost/students/${id}`, {
-					method: "PUT",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify(body),
-				}),
-			);
-	});
-
 	it("doit renvoyer 200 et l'étudiant mis à jour en conservant son ID", async () => {
 		const target = studentsData[0];
 		const response = await put(target.id, updatedPayload);
