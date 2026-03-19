@@ -37,7 +37,6 @@ describe("GET /students", () => {
       const response = await get(`/students/${expected.id}`);
       const body = await response.json();
 
-      console.log("Je ne suis pas censé être à 500 mais a 200");
       expect(response.status).toBe(500);
       expect(body).toMatchObject({
         id: expected.id,
