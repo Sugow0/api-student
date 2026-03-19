@@ -4,3 +4,4 @@ node_modules/
 .zed
 .claude
 CLAUDE.md
+coverage/
