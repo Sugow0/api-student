@@ -39,10 +39,14 @@ jobs:
         run: |
           bun test src/tests/ 2>&1 | tee /tmp/test-output.txt
           {
-            echo "### Coverage"
-            echo '```'
-            grep -E '^\-+\||.*\|' /tmp/test-output.txt || true
-            echo '```'
+            echo "### 📊 Coverage Report"
+            echo ""
+            grep -E '.*\|' /tmp/test-output.txt | grep -v '^\-' | \
+            awk -F'|' '{
+              for(i=1;i<=NF;i++) gsub(/^ +| +$/, "", $i)
+              printf "| %s | %s | %s | %s |\n", $1, $2, $3, $4
+              if(NR==1) print "|---|---|---|---|"
+            }'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Generate JUnit report
