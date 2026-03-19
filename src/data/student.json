@@ -1,0 +1,325 @@
+[
+  {
+    "id": 1,
+    "firstName": "Lucas",
+    "lastName": "Martin",
+    "email": "lucas.martin1@example.com",
+    "grade": 15,
+    "field": "informatique"
+  },
+  {
+    "id": 2,
+    "firstName": "Emma",
+    "lastName": "Bernard",
+    "email": "emma.bernard2@example.com",
+    "grade": 18,
+    "field": "mathématiques"
+  },
+  {
+    "id": 3,
+    "firstName": "Hugo",
+    "lastName": "Dubois",
+    "email": "hugo.dubois3@example.com",
+    "grade": 12,
+    "field": "physique"
+  },
+  {
+    "id": 4,
+    "firstName": "Chloe",
+    "lastName": "Thomas",
+    "email": "chloe.thomas4@example.com",
+    "grade": 14,
+    "field": "chimie"
+  },
+  {
+    "id": 5,
+    "firstName": "Louis",
+    "lastName": "Robert",
+    "email": "louis.robert5@example.com",
+    "grade": 9,
+    "field": "informatique"
+  },
+  {
+    "id": 6,
+    "firstName": "Lea",
+    "lastName": "Richard",
+    "email": "lea.richard6@example.com",
+    "grade": 17,
+    "field": "mathématiques"
+  },
+  {
+    "id": 7,
+    "firstName": "Nathan",
+    "lastName": "Petit",
+    "email": "nathan.petit7@example.com",
+    "grade": 11,
+    "field": "physique"
+  },
+  {
+    "id": 8,
+    "firstName": "Sarah",
+    "lastName": "Durand",
+    "email": "sarah.durand8@example.com",
+    "grade": 16,
+    "field": "chimie"
+  },
+  {
+    "id": 9,
+    "firstName": "Gabriel",
+    "lastName": "Leroy",
+    "email": "gabriel.leroy9@example.com",
+    "grade": 13,
+    "field": "informatique"
+  },
+  {
+    "id": 10,
+    "firstName": "Manon",
+    "lastName": "Moreau",
+    "email": "manon.moreau10@example.com",
+    "grade": 19,
+    "field": "mathématiques"
+  },
+
+  {
+    "id": 11,
+    "firstName": "Ethan",
+    "lastName": "Simon",
+    "email": "ethan.simon11@example.com",
+    "grade": 10,
+    "field": "physique"
+  },
+  {
+    "id": 12,
+    "firstName": "Jade",
+    "lastName": "Laurent",
+    "email": "jade.laurent12@example.com",
+    "grade": 14,
+    "field": "chimie"
+  },
+  {
+    "id": 13,
+    "firstName": "Noah",
+    "lastName": "Michel",
+    "email": "noah.michel13@example.com",
+    "grade": 8,
+    "field": "informatique"
+  },
+  {
+    "id": 14,
+    "firstName": "Lina",
+    "lastName": "Garcia",
+    "email": "lina.garcia14@example.com",
+    "grade": 20,
+    "field": "mathématiques"
+  },
+  {
+    "id": 15,
+    "firstName": "Adam",
+    "lastName": "David",
+    "email": "adam.david15@example.com",
+    "grade": 7,
+    "field": "physique"
+  },
+  {
+    "id": 16,
+    "firstName": "Ines",
+    "lastName": "Roux",
+    "email": "ines.roux16@example.com",
+    "grade": 15,
+    "field": "chimie"
+  },
+  {
+    "id": 17,
+    "firstName": "Paul",
+    "lastName": "Vincent",
+    "email": "paul.vincent17@example.com",
+    "grade": 12,
+    "field": "informatique"
+  },
+  {
+    "id": 18,
+    "firstName": "Zoé",
+    "lastName": "Fournier",
+    "email": "zoe.fournier18@example.com",
+    "grade": 18,
+    "field": "mathématiques"
+  },
+  {
+    "id": 19,
+    "firstName": "Leo",
+    "lastName": "Morel",
+    "email": "leo.morel19@example.com",
+    "grade": 6,
+    "field": "physique"
+  },
+  {
+    "id": 20,
+    "firstName": "Clara",
+    "lastName": "Girard",
+    "email": "clara.girard20@example.com",
+    "grade": 13,
+    "field": "chimie"
+  },
+
+  {
+    "id": 21,
+    "firstName": "Mathis",
+    "lastName": "Andre",
+    "email": "mathis.andre21@example.com",
+    "grade": 11,
+    "field": "informatique"
+  },
+  {
+    "id": 22,
+    "firstName": "Camille",
+    "lastName": "Lefevre",
+    "email": "camille.lefevre22@example.com",
+    "grade": 17,
+    "field": "mathématiques"
+  },
+  {
+    "id": 23,
+    "firstName": "Tom",
+    "lastName": "Mercier",
+    "email": "tom.mercier23@example.com",
+    "grade": 9,
+    "field": "physique"
+  },
+  {
+    "id": 24,
+    "firstName": "Eva",
+    "lastName": "Blanc",
+    "email": "eva.blanc24@example.com",
+    "grade": 14,
+    "field": "chimie"
+  },
+  {
+    "id": 25,
+    "firstName": "Theo",
+    "lastName": "Guerin",
+    "email": "theo.guerin25@example.com",
+    "grade": 16,
+    "field": "informatique"
+  },
+  {
+    "id": 26,
+    "firstName": "Lola",
+    "lastName": "Boyer",
+    "email": "lola.boyer26@example.com",
+    "grade": 19,
+    "field": "mathématiques"
+  },
+  {
+    "id": 27,
+    "firstName": "Enzo",
+    "lastName": "Garnier",
+    "email": "enzo.garnier27@example.com",
+    "grade": 5,
+    "field": "physique"
+  },
+  {
+    "id": 28,
+    "firstName": "Anna",
+    "lastName": "Chevalier",
+    "email": "anna.chevalier28@example.com",
+    "grade": 12,
+    "field": "chimie"
+  },
+  {
+    "id": 29,
+    "firstName": "Maxime",
+    "lastName": "Francois",
+    "email": "maxime.francois29@example.com",
+    "grade": 15,
+    "field": "informatique"
+  },
+  {
+    "id": 30,
+    "firstName": "Nina",
+    "lastName": "Legrand",
+    "email": "nina.legrand30@example.com",
+    "grade": 18,
+    "field": "mathématiques"
+  },
+
+  {
+    "id": 31,
+    "firstName": "Alex",
+    "lastName": "Perrin",
+    "email": "alex.perrin31@example.com",
+    "grade": 10,
+    "field": "physique"
+  },
+  {
+    "id": 32,
+    "firstName": "Mila",
+    "lastName": "Faure",
+    "email": "mila.faure32@example.com",
+    "grade": 13,
+    "field": "chimie"
+  },
+  {
+    "id": 33,
+    "firstName": "Victor",
+    "lastName": "Noel",
+    "email": "victor.noel33@example.com",
+    "grade": 17,
+    "field": "informatique"
+  },
+  {
+    "id": 34,
+    "firstName": "Elise",
+    "lastName": "Marchand",
+    "email": "elise.marchand34@example.com",
+    "grade": 20,
+    "field": "mathématiques"
+  },
+  {
+    "id": 35,
+    "firstName": "Antoine",
+    "lastName": "Colin",
+    "email": "antoine.colin35@example.com",
+    "grade": 8,
+    "field": "physique"
+  },
+  {
+    "id": 36,
+    "firstName": "Juliette",
+    "lastName": "Renard",
+    "email": "juliette.renard36@example.com",
+    "grade": 14,
+    "field": "chimie"
+  },
+  {
+    "id": 37,
+    "firstName": "Baptiste",
+    "lastName": "Arnaud",
+    "email": "baptiste.arnaud37@example.com",
+    "grade": 16,
+    "field": "informatique"
+  },
+  {
+    "id": 38,
+    "firstName": "Alicia",
+    "lastName": "Lemoine",
+    "email": "alicia.lemoine38@example.com",
+    "grade": 19,
+    "field": "mathématiques"
+  },
+  {
+    "id": 39,
+    "firstName": "Samuel",
+    "lastName": "Barbier",
+    "email": "samuel.barbier39@example.com",
+    "grade": 7,
+    "field": "physique"
+  },
+  {
+    "id": 40,
+    "firstName": "Marine",
+    "lastName": "Benoit",
+    "email": "marine.benoit40@example.com",
+    "grade": 15,
+    "field": "chimie"
+  }
+]
