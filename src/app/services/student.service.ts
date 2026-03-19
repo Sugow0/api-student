@@ -1,5 +1,5 @@
 import studentsData from "../../data/student.json";
-import type { CreateStudentDto, Stats, Student } from "../schemas/student.schema";
+import type { CreateStudentDto, SearchStudentDto, Stats, Student } from "../schemas/student.schema";
 
 export type UpdateResult = "NOT_FOUND" | "EMAIL_CONFLICT" | Student;
 
@@ -22,13 +22,15 @@ export const studentService = {
     return newStudent;
   },
 
-  search: (q: string): Student[] => {
-    const term = q.toLowerCase();
-    return students.filter(
-      (s) =>
-        s.firstName.toLowerCase().includes(term) ||
-        s.lastName.toLowerCase().includes(term),
-    );
+  search: (filters: SearchStudentDto): Student[] => {
+    return students.filter((s) => {
+      if (filters.firstName && !s.firstName.toLowerCase().includes(filters.firstName.toLowerCase())) return false;
+      if (filters.lastName && !s.lastName.toLowerCase().includes(filters.lastName.toLowerCase())) return false;
+      if (filters.email && !s.email.toLowerCase().includes(filters.email.toLowerCase())) return false;
+      if (filters.grade !== undefined && s.grade !== filters.grade) return false;
+      if (filters.field && s.field !== filters.field) return false;
+      return true;
+    });
   },
 
   getStats: (): Stats => {

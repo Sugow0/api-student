@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import { CreateStudentSchema, StatsSchema, StudentSchema } from "../schemas/student.schema";
+import { CreateStudentSchema, SearchStudentSchema, StatsSchema, StudentSchema } from "../schemas/student.schema";
 import { studentService } from "../services/student.service";
 
 const idParams = t.Object({ id: t.String() });
@@ -105,21 +105,23 @@ export const studentController = new Elysia({ prefix: "/students" })
   )
   .get(
     "/search",
-    ({ query: { q }, set }) => {
-      if (!q || q.trim() === "") {
+    ({ query, set }) => {
+      const hasFilter = Object.values(query).some((v) => v !== undefined && v !== "");
+      if (!hasFilter) {
         set.status = 400;
-        return { message: "Le paramètre q est requis et ne peut pas être vide" };
+        return { message: "Au moins un paramètre de recherche est requis" };
       }
-      return studentService.search(q.trim());
+      return studentService.search(query);
     },
     {
-      query: t.Object({ q: t.Optional(t.String()) }),
+      query: SearchStudentSchema,
       detail: {
-        summary: "Rechercher des étudiants par nom/prénom",
+        summary: "Rechercher des étudiants par champ",
+        description: "Filtre par firstName, lastName, email, grade et/ou field (insensible à la casse pour les chaînes)",
         tags: ["students"],
         responses: {
           200: { description: "Liste des étudiants correspondants" },
-          400: { description: "Paramètre q absent ou vide" },
+          400: { description: "Aucun paramètre de recherche fourni" },
         },
       },
     },

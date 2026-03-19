@@ -35,6 +35,21 @@ export const CreateStudentSchema = t.Object({
   ]),
 });
 
+export const SearchStudentSchema = t.Object({
+  firstName: t.Optional(t.String()),
+  lastName: t.Optional(t.String()),
+  email: t.Optional(t.String()),
+  grade: t.Optional(t.Numeric({ minimum: 0, maximum: 20 })),
+  field: t.Optional(
+    t.Union([
+      t.Literal("informatique"),
+      t.Literal("mathématiques"),
+      t.Literal("physique"),
+      t.Literal("chimie"),
+    ]),
+  ),
+});
+
 export const StatsSchema = t.Object({
   totalStudents: t.Number(),
   averageGrade: t.Number(),
@@ -44,4 +59,5 @@ export const StatsSchema = t.Object({
 
 export type Student = Static<typeof StudentSchema>;
 export type CreateStudentDto = Static<typeof CreateStudentSchema>;
+export type SearchStudentDto = Static<typeof SearchStudentSchema>;
 export type Stats = Static<typeof StatsSchema>;
