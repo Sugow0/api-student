@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import students from "../../data/student.json";
+import { studentService } from "../services/student.service";
 
 export const studentController = new Elysia({ prefix: "/students" })
   .get("/:id", ({ params: { id }, set, error }) => {
@@ -10,7 +10,7 @@ export const studentController = new Elysia({ prefix: "/students" })
       return error(400, { message: "L'ID doit être un nombre valide" });
     }
 
-    const student = students.find((s) => s.id === parsed);
+    const student = studentService.findById(parsed);
 
     if (!student) {
       set.status = 404;
@@ -50,7 +50,7 @@ export const studentController = new Elysia({ prefix: "/students" })
   })
   .get(
   "/",
-  () => students,
+  () => studentService.findAll(),
   {
     detail: {
       summary: "Récupérer tous les étudiants",
