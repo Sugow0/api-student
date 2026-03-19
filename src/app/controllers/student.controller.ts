@@ -1,14 +1,6 @@
 import { Elysia, t } from "elysia";
+import { CreateStudentSchema, StudentSchema } from "../schemas/student.schema";
 import { studentService } from "../services/student.service";
-
-const studentSchema = t.Object({
-  id: t.Number(),
-  firstName: t.String(),
-  lastName: t.String(),
-  email: t.String(),
-  grade: t.Number(),
-  field: t.String(),
-});
 
 export const studentController = new Elysia({ prefix: "/students" })
   .onError(({ code, error, set }) => {
@@ -30,18 +22,7 @@ export const studentController = new Elysia({ prefix: "/students" })
       return student;
     },
     {
-      body: t.Object({
-        firstName: t.String({ minLength: 2 }),
-        lastName: t.String({ minLength: 2 }),
-        email: t.String({ format: "email" }),
-        grade: t.Number({ minimum: 0, maximum: 20 }),
-        field: t.Union([
-          t.Literal("informatique"),
-          t.Literal("mathématiques"),
-          t.Literal("physique"),
-          t.Literal("chimie"),
-        ]),
-      }),
+      body: CreateStudentSchema,
       detail: {
         summary: "Créer un nouvel étudiant",
         description: "Crée un étudiant avec validation complète des champs",
@@ -54,82 +35,50 @@ export const studentController = new Elysia({ prefix: "/students" })
       },
     },
   )
-  .get("/:id", ({ params: { id }, set }) => {
-    const parsed = Number(id);
+  .get(
+    "/:id",
+    ({ params: { id }, set }) => {
+      const parsed = Number(id);
 
-    if (!Number.isInteger(parsed) || isNaN(parsed)) {
-      set.status = 400;
-      return { message: "L'ID doit être un nombre valide" };
-    }
+      if (!Number.isInteger(parsed) || isNaN(parsed)) {
+        set.status = 400;
+        return { message: "L'ID doit être un nombre valide" };
+      }
 
-    const student = studentService.findById(parsed);
+      const student = studentService.findById(parsed);
 
-    if (!student) {
-      set.status = 404;
-      return { message: `Aucun étudiant trouvé avec l'ID ${parsed}` };
-    }
+      if (!student) {
+        set.status = 404;
+        return { message: `Aucun étudiant trouvé avec l'ID ${parsed}` };
+      }
 
-    return student;
-  }, {
-    params: t.Object({ id: t.String() }),
-    detail: {
-      summary: "Récupérer un étudiant par son ID",
-      description: "Retourne un étudiant selon son identifiant",
-      tags: ["students"],
-      responses: {
-        200: {
-          description: "Étudiant trouvé",
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                  id: { type: "number" },
-                  firstName: { type: "string" },
-                  lastName: { type: "string" },
-                  email: { type: "string" },
-                  grade: { type: "number" },
-                  field: { type: "string" },
-                },
-              },
-            },
-          },
+      return student;
+    },
+    {
+      params: t.Object({ id: t.String() }),
+      detail: {
+        summary: "Récupérer un étudiant par son ID",
+        description: "Retourne un étudiant selon son identifiant",
+        tags: ["students"],
+        responses: {
+          200: { description: "Étudiant trouvé" },
+          400: { description: "ID invalide (non numérique)" },
+          404: { description: "Étudiant non trouvé" },
         },
-        400: { description: "ID invalide (non numérique)" },
-        404: { description: "Étudiant non trouvé" },
       },
     },
-  })
+  )
   .get(
     "/",
     () => studentService.findAll(),
     {
+      response: t.Array(StudentSchema),
       detail: {
         summary: "Récupérer tous les étudiants",
         description: "Retourne la liste complète de tous les étudiants",
         tags: ["students"],
         responses: {
-          200: {
-            description: "Liste des étudiants",
-            content: {
-              "application/json": {
-                schema: {
-                  type: "array",
-                  items: {
-                    type: "object",
-                    properties: {
-                      id: { type: "number" },
-                      firstName: { type: "string" },
-                      lastName: { type: "string" },
-                      email: { type: "string" },
-                      grade: { type: "number" },
-                      field: { type: "string" },
-                    },
-                  },
-                },
-              },
-            },
-          },
+          200: { description: "Liste des étudiants" },
         },
       },
     },

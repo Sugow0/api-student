@@ -1,35 +1,21 @@
 import studentsData from "../../data/student.json";
+import type { CreateStudentDto, Student } from "../schemas/student.schema";
 
-export const ALLOWED_FIELDS = [
-  "informatique",
-  "mathématiques",
-  "physique",
-  "chimie",
-] as const;
-
-export type Field = (typeof ALLOWED_FIELDS)[number];
-
-export interface CreateStudentDto {
-  firstName: string;
-  lastName: string;
-  email: string;
-  grade: number;
-  field: Field;
-}
-
-const students = [...studentsData];
+const students: Student[] = [...studentsData];
 
 export const studentService = {
-  findAll: () => students,
+  findAll: (): Student[] => students,
 
-  findById: (id: number) => students.find((s) => s.id === id) ?? null,
+  findById: (id: number): Student | null =>
+    students.find((s) => s.id === id) ?? null,
 
-  isEmailTaken: (email: string) => students.some((s) => s.email === email),
+  isEmailTaken: (email: string): boolean =>
+    students.some((s) => s.email === email),
 
-  create: (data: CreateStudentDto) => {
+  create: (data: CreateStudentDto): Student => {
     const id =
       students.length > 0 ? Math.max(...students.map((s) => s.id)) + 1 : 1;
-    const newStudent = { id, ...data };
+    const newStudent: Student = { id, ...data };
     students.push(newStudent);
     return newStudent;
   },
