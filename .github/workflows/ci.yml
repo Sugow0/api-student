@@ -38,8 +38,7 @@ jobs:
         run: bun run coverage
 
       - name: Upload coverage report
-        if: matrix.bun-version == '1.2'
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report
+          name: coverage-report-bun-${{ matrix.bun-version }}
           path: coverage/
