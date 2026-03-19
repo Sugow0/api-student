@@ -39,7 +39,7 @@ describe("GET /students", () => {
 			const response = await get(`/students/${expected.id}`);
 			const body = await response.json();
 
-			expect(response.status).toBe(500);
+			expect(response.status).toBe(200);
 			expect(body).toMatchObject({
 				id: expected.id,
 				firstName: expected.firstName,
