@@ -3,6 +3,7 @@
   "version": "1.0.50",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
+    "build": "bun build src/index.ts --outdir dist/",
     "lint": "biome check src/",
     "lint:fix": "biome check --write src/",
     "test": "bun test src/tests/",
