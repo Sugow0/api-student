@@ -22,6 +22,15 @@ export const studentService = {
     return newStudent;
   },
 
+  search: (q: string): Student[] => {
+    const term = q.toLowerCase();
+    return students.filter(
+      (s) =>
+        s.firstName.toLowerCase().includes(term) ||
+        s.lastName.toLowerCase().includes(term),
+    );
+  },
+
   getStats: (): Stats => {
     const total = students.length;
     const averageGrade =

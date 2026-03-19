@@ -104,6 +104,27 @@ export const studentController = new Elysia({ prefix: "/students" })
     },
   )
   .get(
+    "/search",
+    ({ query: { q }, set }) => {
+      if (!q || q.trim() === "") {
+        set.status = 400;
+        return { message: "Le paramètre q est requis et ne peut pas être vide" };
+      }
+      return studentService.search(q.trim());
+    },
+    {
+      query: t.Object({ q: t.Optional(t.String()) }),
+      detail: {
+        summary: "Rechercher des étudiants par nom/prénom",
+        tags: ["students"],
+        responses: {
+          200: { description: "Liste des étudiants correspondants" },
+          400: { description: "Paramètre q absent ou vide" },
+        },
+      },
+    },
+  )
+  .get(
     "/stats",
     () => studentService.getStats(),
     {
