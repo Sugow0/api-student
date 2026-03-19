@@ -10,6 +10,7 @@ API REST de gestion des étudiants construite avec [Elysia](https://elysiajs.com
 bun install
 bun run dev        # http://localhost:3000
 bun run lint       # vérification du code
+bun run lint:fix   # fix le code selon les règles de lint 
 bun run test:run   # tests unitaires
 bun run coverage   # couverture de code
 ```
