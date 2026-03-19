@@ -65,5 +65,5 @@ jobs:
           fail-on-error: true
 
       - name: Build
-        depends-on: test
+        if: steps.test.conclusion != 'skipped' && steps.test.conclusion != 'cancelled'
         run: bun run build
