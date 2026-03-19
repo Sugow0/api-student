@@ -37,6 +37,7 @@ jobs:
 
       - name: Test
         run: |
+          set -o pipefail
           bun test src/tests/ 2>&1 | tee /tmp/test-output.txt
           {
             echo "### 📊 Coverage Report"
