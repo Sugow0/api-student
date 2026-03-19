@@ -1,29 +1,33 @@
-import { describe, it, expect, beforeAll } from "vitest";
-import { Elysia } from "elysia";
-import { studentController } from "../app/controllers/student.controller";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import studentsData from "../data/student.json";
 
-const app = new Elysia().use(studentController);
-
-const get = (path: string) =>
-  app.handle(new Request(`http://localhost${path}`));
-
 describe("GET /students", () => {
-  describe("liste complète", () => {
-    it("doit renvoyer le statut 200", async () => {
-      const response = await get("/students");
-      expect(response.status).toBe(200);
-    });
+  let get: (path: string) => Promise<Response>;
 
-    it("doit renvoyer un tableau JSON", async () => {
+  beforeEach(async () => {
+    vi.resetModules();
+    const { Elysia } = await import("elysia");
+    const { studentController } = await import(
+      "../app/controllers/student.controller"
+    );
+    const app = new Elysia().use(studentController);
+    get = (path) => app.handle(new Request(`http://localhost${path}`));
+  });
+
+  describe("liste complète", () => {
+    it("doit renvoyer 200 et un tableau JSON", async () => {
       const response = await get("/students");
       const body = await response.json();
+
+      expect(response.status).toBe(200);
       expect(Array.isArray(body)).toBe(true);
     });
 
     it("doit renvoyer tous les étudiants initiaux", async () => {
       const response = await get("/students");
       const body = await response.json();
+
+      expect(response.status).toBe(200);
       expect(body).toHaveLength(studentsData.length);
     });
   });
@@ -45,20 +49,22 @@ describe("GET /students", () => {
       });
     });
 
-    it("doit renvoyer 404 pour un ID inexistant", async () => {
+    it("doit renvoyer 404 et un message d'erreur pour un ID inexistant", async () => {
       const response = await get("/students/9999");
       const body = await response.json();
 
       expect(response.status).toBe(404);
       expect(body).toHaveProperty("message");
+      expect(typeof body.message).toBe("string");
     });
 
-    it("doit renvoyer 400 pour un ID non numérique", async () => {
+    it("doit renvoyer 400 et un message d'erreur pour un ID non numérique", async () => {
       const response = await get("/students/abc");
       const body = await response.json();
 
       expect(response.status).toBe(400);
       expect(body).toHaveProperty("message");
+      expect(typeof body.message).toBe("string");
     });
   });
 });

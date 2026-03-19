@@ -1,18 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { Elysia } from "elysia";
-import { studentController } from "../app/controllers/student.controller";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import studentsData from "../data/student.json";
-
-const app = new Elysia().use(studentController);
-
-const put = (id: number, body: unknown) =>
-  app.handle(
-    new Request(`http://localhost/students/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }),
-  );
 
 const updatedPayload = {
   firstName: "Lucas",
@@ -23,7 +10,26 @@ const updatedPayload = {
 };
 
 describe("PUT /students/:id", () => {
-  it("doit renvoyer 200 et l'étudiant mis à jour pour un ID valide", async () => {
+  let put: (id: number, body: unknown) => Promise<Response>;
+
+  beforeEach(async () => {
+    vi.resetModules();
+    const { Elysia } = await import("elysia");
+    const { studentController } = await import(
+      "../app/controllers/student.controller"
+    );
+    const app = new Elysia().use(studentController);
+    put = (id, body) =>
+      app.handle(
+        new Request(`http://localhost/students/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }),
+      );
+  });
+
+  it("doit renvoyer 200 et l'étudiant mis à jour en conservant son ID", async () => {
     const target = studentsData[0];
     const response = await put(target.id, updatedPayload);
     const body = await response.json();
@@ -32,11 +38,12 @@ describe("PUT /students/:id", () => {
     expect(body).toMatchObject({ id: target.id, ...updatedPayload });
   });
 
-  it("doit renvoyer 404 pour un ID inexistant", async () => {
+  it("doit renvoyer 404 et un message d'erreur pour un ID inexistant", async () => {
     const response = await put(9999, updatedPayload);
     const body = await response.json();
 
     expect(response.status).toBe(404);
     expect(body).toHaveProperty("message");
+    expect(typeof body.message).toBe("string");
   });
 });
