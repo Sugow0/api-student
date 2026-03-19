@@ -61,3 +61,4 @@ jobs:
           name: Bun Test Report (Bun ${{ matrix.bun-version }})
           path: test-results.xml
           reporter: java-junit
+          fail-on-error: true
