@@ -9,7 +9,7 @@ on:
 jobs:
   ci:
     name: Lint & Test (Bun ${{ matrix.bun-version }})
-    runs-on: ubuntu-latest
+    runs-on: alpine-latest
 
     permissions:
       checks: write
