@@ -35,5 +35,13 @@ export const CreateStudentSchema = t.Object({
   ]),
 });
 
+export const StatsSchema = t.Object({
+  totalStudents: t.Number(),
+  averageGrade: t.Number(),
+  studentsByField: t.Record(t.String(), t.Number()),
+  bestStudent: StudentSchema,
+});
+
 export type Student = Static<typeof StudentSchema>;
 export type CreateStudentDto = Static<typeof CreateStudentSchema>;
+export type Stats = Static<typeof StatsSchema>;

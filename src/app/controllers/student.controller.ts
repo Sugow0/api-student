@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import { CreateStudentSchema, StudentSchema } from "../schemas/student.schema";
+import { CreateStudentSchema, StatsSchema, StudentSchema } from "../schemas/student.schema";
 import { studentService } from "../services/student.service";
 
 const idParams = t.Object({ id: t.String() });
@@ -99,6 +99,20 @@ export const studentController = new Elysia({ prefix: "/students" })
           400: { description: "ID invalide ou données invalides" },
           404: { description: "Étudiant non trouvé" },
           409: { description: "Email déjà utilisé par un autre étudiant" },
+        },
+      },
+    },
+  )
+  .get(
+    "/stats",
+    () => studentService.getStats(),
+    {
+      response: StatsSchema,
+      detail: {
+        summary: "Statistiques des étudiants",
+        tags: ["students"],
+        responses: {
+          200: { description: "Statistiques globales" },
         },
       },
     },

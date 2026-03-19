@@ -1,5 +1,5 @@
 import studentsData from "../../data/student.json";
-import type { CreateStudentDto, Student } from "../schemas/student.schema";
+import type { CreateStudentDto, Stats, Student } from "../schemas/student.schema";
 
 export type UpdateResult = "NOT_FOUND" | "EMAIL_CONFLICT" | Student;
 
@@ -20,6 +20,18 @@ export const studentService = {
     const newStudent: Student = { id, ...data };
     students.push(newStudent);
     return newStudent;
+  },
+
+  getStats: (): Stats => {
+    const total = students.length;
+    const averageGrade =
+      Math.round((students.reduce((sum, s) => sum + s.grade, 0) / total) * 100) / 100;
+    const studentsByField = students.reduce<Record<string, number>>((acc, s) => {
+      acc[s.field] = (acc[s.field] ?? 0) + 1;
+      return acc;
+    }, {});
+    const bestStudent = students.reduce((best, s) => (s.grade > best.grade ? s : best));
+    return { totalStudents: total, averageGrade, studentsByField, bestStudent };
   },
 
   remove: (id: number): boolean => {
